@@ -3,6 +3,7 @@ package com.citi.jira.plugin;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 
@@ -32,7 +33,7 @@ public class JiraApiService {
 	}
 	
 	
-	public void postToJiraApi(String url,String payLoad) throws Exception {
+	public int postToJiraApi(String url,String payLoad) throws Exception {
 		///rest/api/2/issue/{issueIdOrKey}/worklog
 		
 		URL myURL = new URL(url);
@@ -56,10 +57,15 @@ public class JiraApiService {
 		
 		System.out.println("response :: " + respone);
 		System.out.println("response code :: " + connection.getResponseCode());
+		return connection.getResponseCode();
 	}
 	
 	
-	public void callJiraApi(String cmd){
+	@SuppressWarnings("rawtypes")
+	public Object callJiraApi(String cmd){
+		
+		StringBuilder payloadBuilder = new StringBuilder("{");
+		String payload = "";
 		
 		if(cmd!=null && cmd.length() >0){
 			String [] params = cmd.split(" ");
@@ -68,12 +74,41 @@ public class JiraApiService {
 				
 				if(jiraCmd!=null && AppCache.get(params[0])!=null) {
 					
+					if("POST".equalsIgnoreCase(jiraCmd.getMethod())){
+						
+						if(AppCache.get(params[0]) instanceof Map){
+							Map paramData = (Map)AppCache.get(params[0]);
+							
+							if(paramData.get(String.valueOf(params.length-1)) !=null){
+								String reqKeys = paramData.get(String.valueOf(params.length-1)).toString();
+								int i=1;
+								for(String key : reqKeys.split(",")){
+									payloadBuilder.append("\"" + key + "\":");
+									payloadBuilder.append("\"" + params[i] + "\",");
+									i++;
+								}
+							}
+							
+						}
+						payload = payloadBuilder.toString().substring(0, payloadBuilder.toString().length()-1);
+						payload = payload + "}";
+						
+						try {
+							int code = postToJiraApi(jiraCmd.getEndpoint(), payload);
+							System.out.println(code +" --- " + cmd );
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+					
+					
 					
 					
 				}
 			}
 		}
 		
+		return null;
 	}
 	
 	public static void main(String[] args) {

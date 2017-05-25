@@ -2,7 +2,7 @@ package com.citi.jira.plugin;
 
 
 public enum Command {
-	LOGWORK("log","POST","");
+	LOGWORK("log","POST","http://localhost:8080/rest/api/2/issue/TP-1/worklog");
 	
 	private String cmd;
 	private String method;
@@ -11,6 +11,7 @@ public enum Command {
 	Command(String cmd,String method,String url){
 		this.cmd = cmd;
 		this.method = method;
+		this.endpoint = url;
 	}
 	
 	

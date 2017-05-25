@@ -1,11 +1,9 @@
 package com.citi.jira.plugin;
 
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -14,11 +12,9 @@ import java.io.PrintStream;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -29,12 +25,15 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Application {
 	
 	public static StringBuilder consoleText = new StringBuilder();
+	
+	private JiraApiService jiraService;
 
     public static void main(String[] args) {
         new Application();
     }
 
     public Application() {
+    	jiraService = new JiraApiService();
         EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -70,7 +69,7 @@ public class Application {
     }
     
     
-    public static void addComponentsToPane(Container pane) {
+    public void addComponentsToPane(Container pane) {
         pane.setLayout(null);
         
         
@@ -79,7 +78,7 @@ public class Application {
  
  
         pane.add(title);
-        JTextField textField = new JTextField();
+        final JTextField textField = new JTextField();
         
         textField.setBounds(10,10,470,40);
         
@@ -94,8 +93,10 @@ public class Application {
         aMap.put(enter, new AbstractAction() {
 
            @Override
-           public void actionPerformed(ActionEvent arg0) {
-              System.out.println("enter pressed");
+           public void actionPerformed(ActionEvent event) {
+        	   System.out.println("Entered command .... " + textField.getText());
+        	   jiraService.callJiraApi(textField.getText());
+              
            }
         });
         pane.add(textField);
@@ -103,7 +104,7 @@ public class Application {
         
         JTextArea ta = new JTextArea();
         ta.setEditable(false);
-        TextAreaOutputStream taos = new TextAreaOutputStream( ta, "console" );
+        TextAreaOutputStream taos = new TextAreaOutputStream( ta, "" );
         PrintStream ps = new PrintStream( taos );
         System.setOut( ps );
         System.setErr( ps );
