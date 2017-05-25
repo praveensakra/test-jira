@@ -1,0 +1,14 @@
+{
+"log" : {
+	"2":{
+		"comment" : "",
+		"timeSpentSeconds" : ""
+	},
+	"3" : {
+		"comment" : "",
+		"timeSpentSeconds" : "",
+		"started" : ""
+	}
+},
+"basicAuth":"Basic cHJhdmVlbnNha3JhOnByYXZlZW5zYWtyYQ=="
+}
