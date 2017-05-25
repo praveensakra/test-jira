@@ -13,7 +13,6 @@ public class AppCache {
 	
 	private static Map<String, Object> cache = new HashMap<String, Object>();
 	static{
-		cache.put("", "");
 		InputStream io = AppCache.class.getClassLoader().getResourceAsStream("config.json");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
