@@ -96,6 +96,7 @@ public class Application {
            public void actionPerformed(ActionEvent event) {
         	   System.out.println("Entered command .... " + textField.getText());
         	   jiraService.callJiraApi(textField.getText());
+        	   textField.setText("");
               
            }
         });

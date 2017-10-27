@@ -1,7 +1,7 @@
 {
 "log" : {
-	"2":"comment,timeSpentSeconds",
-	"3" : "comment,timeSpentSeconds,started"
+	"3":"jiraId,comment,timeSpentSeconds",
+	"4" : "jiraId,comment,timeSpentSeconds,started"
 },
-"basicAuth":"Basic cHJhdmVlbnNha3JhOnByYXZlZW5zYWtyYQ=="
+"basicAuth":"Basic cHJhdmVlbnNha3JhOlBSQVZFRU5zNkA="
 }
